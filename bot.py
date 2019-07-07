@@ -15,7 +15,7 @@ def main():
     dp = updater.dispatcher
     pattern_apice = re.compile('apice', re.IGNORECASE)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice), trentaelode))
-    pattern_max = re.compile('max.*3[0-9]', re.IGNORECASE)
+    pattern_max = re.compile('max.*(3[0-9]|trenta)|(3[0-9]|trenta).*max', re.IGNORECASE)
     dp.add_handler(MessageHandler(Filters.regex(pattern_max), delete_message))
 
     PORT = int(os.environ.get("PORT", "8443"))
