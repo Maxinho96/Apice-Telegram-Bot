@@ -1,1 +1,2 @@
-Apice-Telegram-Bot
+# Apice-Telegram-Bot
+Simple Telegram bot for fun.
