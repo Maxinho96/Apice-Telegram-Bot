@@ -20,13 +20,13 @@ def main():
     updater = Updater(TOKEN)
     dp = updater.dispatcher
 
-    pattern_apice_max = re.compile('(?=.*(a|4)\s*p\s*(i|1)\s*c\s*(e|3))(?=.*m\s*(a|4)\s*(x|s\s*s\s*(i|1))).*', re.IGNORECASE | re.DOTALL)
+    pattern_apice_max = re.compile('(?=.*[a4]+[\W_]*p+[\W_]*[i1]+[\W_]*c+[\W_]*[e3]+)(?=.*((m|/\/\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+)).*', re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice_max), trentaelodemax, allow_edited=True))
 
-    pattern_apice = re.compile('(?=.*(a|4)\s*p\s*(i|1)\s*c\s*(e|3))', re.IGNORECASE | re.DOTALL)
+    pattern_apice = re.compile('(?=.*[a4]+[\W_]*p+[\W_]*[i1]+[\W_]*c+[\W_]*[e3]+)', re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice), trentaelode, allow_edited=True))
 
-    pattern_max = re.compile('(?=.*m\s*(a|4)\s*(x|s\s*s\s*(i|1)))(?=.*([0-9]\s*[0-9]|t\s*r\s*(e|3)\s*n\s*t\s*(a|4)|l\s*(o|0)\s*d\s*(e|3)|3o)).*', re.IGNORECASE | re.DOTALL)
+    pattern_max = re.compile('(?=.*((m|/\/\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+))(?=.*([0-9]+[\W_]*[0-9o]+|t+[\W_]*r+[\W_]*[e3]+[\W_]*n+[\W_]*t+[\W_]*[a4]+|l+[\W_]*(o|0)+[\W_]*d+[\W_]*[e3]+)).*', re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_max), delete_message, allow_edited=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
