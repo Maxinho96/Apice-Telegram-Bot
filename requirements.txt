@@ -1,0 +1,4 @@
+# This file may be used to create a conda environment using:
+# $ conda create --name <env> --file <this file>
+
+python-telegram-bot==11.1.0

@@ -2,17 +2,21 @@ from telegram.ext import Updater, MessageHandler, Filters
 import os
 import re
 
+
 def trentaelode(bot, update):
     message = update.message or update.edited_message
     message.reply_text('30 e lode')
+
 
 def trentaelodemax(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Apice 30 e lode, Max bocciato')
 
+
 def delete_message(bot, update):
     message = update.message or update.edited_message
     bot.deleteMessage(chat_id=message.chat.id, message_id=message.message_id)
+
 
 def main():
     TOKEN = os.getenv("TOKEN")
@@ -33,6 +37,7 @@ def main():
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
     updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
+
 
 if __name__ == '__main__':
     main()
