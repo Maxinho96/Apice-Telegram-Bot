@@ -77,7 +77,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.regex(pattern_max30L), stocazzo, edited_updates=True))
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(regex_stocazzo) & Filters.user(user_id=apice_id), trentaelode, edited_updates=True))
+    dp.add_handler(MessageHandler(Filters.regex(regex_stocazzo) & Filters.user(user_id=116177472), trentaelode, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
