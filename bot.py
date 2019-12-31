@@ -1,7 +1,9 @@
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import Updater, MessageHandler, Filters, Handler
 import os
 import re
 
+def preprocess(bot, update):
+    update.message = "apice"
 
 def trentaelode(bot, update):
     message = update.message or update.edited_message
@@ -64,6 +66,8 @@ def main():
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
+
+    dp.add_handler(Handler(preprocess, edited_updates=True))
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice_max), trentaelodemax, edited_updates=True))
