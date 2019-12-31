@@ -72,10 +72,10 @@ def main():
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice), trentaelode, edited_updates=True))
 
     # pattern_max = re.compile('(?=.*((m|/\\\\/\\\\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+))(?=.*([0-9]+[\W_]*[0-9o]+|t+[\W_]*r+[\W_]*[e3]+[\W_]*n+[\W_]*t+[\W_]*[a4]+|l+[\W_]*(o|0)+[\W_]*d+[\W_]*[e3]+)).*', re.IGNORECASE | re.DOTALL)
-    pattern_max30L = re.compile(regex_max + regex_30L)
+    pattern_max30L = re.compile(regex_max + regex_30L, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_max30L), stocazzo, edited_updates=True))
 
-    pattern_stocazzo = re.compile(regex_stocazzo)
+    pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(regex_stocazzo) & Filters.user(user_id="256936733"), trentaelode, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
