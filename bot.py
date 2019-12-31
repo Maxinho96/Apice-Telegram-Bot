@@ -54,6 +54,7 @@ def letter_to_chars(letter):
 
 def main():
     TOKEN = os.getenv("TOKEN")
+    APICE_ID = int(os.getenv("APICE_ID"))
 
     updater = Updater(TOKEN)
     dp = updater.dispatcher
@@ -63,7 +64,6 @@ def main():
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
-    apice_id = 256936733
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice_max), trentaelodemax, edited_updates=True))
@@ -77,7 +77,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.regex(pattern_max30L), stocazzo, edited_updates=True))
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(pattern_stocazzo) & Filters.user(user_id=apice_id), trentaelode, edited_updates=True))
+    dp.add_handler(MessageHandler(Filters.regex(pattern_stocazzo) & Filters.user(user_id=APICE_ID), trentaelode, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
