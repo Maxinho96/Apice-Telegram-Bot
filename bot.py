@@ -7,7 +7,6 @@ def trentaelode(bot, update):
     message = update.message or update.edited_message
     message.reply_text('30 e lode')
 
-
 def trentaelodemax(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Apice 30 e lode, Max bocciato')
@@ -63,7 +62,7 @@ def main():
     regex_apice = word_to_regex("apice")
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
-    
+    regex_stocazzo = word_to_regex("sto cazzo")
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(Filters.regex(pattern_apice_max), trentaelodemax, edited_updates=True))
@@ -75,6 +74,9 @@ def main():
     # pattern_max = re.compile('(?=.*((m|/\\\\/\\\\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+))(?=.*([0-9]+[\W_]*[0-9o]+|t+[\W_]*r+[\W_]*[e3]+[\W_]*n+[\W_]*t+[\W_]*[a4]+|l+[\W_]*(o|0)+[\W_]*d+[\W_]*[e3]+)).*', re.IGNORECASE | re.DOTALL)
     pattern_max30L = re.compile(regex_max + regex_30L)
     dp.add_handler(MessageHandler(Filters.regex(pattern_max30L), stocazzo, edited_updates=True))
+
+    pattern_stocazzo = re.compile(regex_stocazzo)
+    dp.add_handler(MessageHandler(Filters.regex(regex_stocazzo) | Filters.user(user_id="256936733"), trentaelode, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
