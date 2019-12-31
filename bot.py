@@ -1,6 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 import os
 import re
+import RegexPreprocessingFilter
 
 
 def trentaelode(bot, update):
@@ -66,18 +67,18 @@ def main():
     regex_stocazzo = word_to_regex("sto cazzo")
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(pattern_apice_max), trentaelodemax, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), trentaelodemax, edited_updates=True))
 
     # pattern_apice = re.compile('(?=.*[a4]+[\W_]*p+[\W_]*[i1]+[\W_]*c+[\W_]*[e3]+)', re.IGNORECASE | re.DOTALL)
     pattern_apice = re.compile(regex_apice, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(pattern_apice), trentaelode, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice), trentaelode, edited_updates=True))
 
     # pattern_max = re.compile('(?=.*((m|/\\\\/\\\\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+))(?=.*([0-9]+[\W_]*[0-9o]+|t+[\W_]*r+[\W_]*[e3]+[\W_]*n+[\W_]*t+[\W_]*[a4]+|l+[\W_]*(o|0)+[\W_]*d+[\W_]*[e3]+)).*', re.IGNORECASE | re.DOTALL)
     pattern_max30L = re.compile(regex_max + regex_30L, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(pattern_max30L), stocazzo, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_max30L), stocazzo, edited_updates=True))
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(Filters.regex(pattern_stocazzo) & Filters.user(user_id=APICE_ID), trentaelode, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), trentaelode, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
