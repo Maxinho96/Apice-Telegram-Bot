@@ -1,7 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 import os
 import re
-import RegexPreprocessingFilter
+from custom_filters import RegexPreprocessingFilter
 
 
 def trentaelode(bot, update):
