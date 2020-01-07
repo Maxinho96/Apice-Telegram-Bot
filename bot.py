@@ -32,8 +32,8 @@ def word_to_regex(word):
 
 # Given a letters, returns all chars similar to that letter (e.g. a is similar to 4)
 def letter_to_chars(letter):
-    dic = {"a": "a4",
-           "b": "b",
+    dic = {"a": "a4🅰️",
+           "b": "b🅱️",
            "c": "c",
            "d": "d",
            "e": "e3",
@@ -41,11 +41,11 @@ def letter_to_chars(letter):
            "l": "l",
            "m": "m",
            "n": "n",
-           "o": "o0",
+           "o": "o0🅾️",
            "p": "p",
            "r": "r",
-           "s": "s",
-           "t": "t",
+           "s": "s5",
+           "t": "t7",
            "u": "u",
            "x": "x",
            "z": "z2",
