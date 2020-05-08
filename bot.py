@@ -6,15 +6,19 @@ from custom_filters import RegexPreprocessingFilter
 
 def trentaelode(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('30 e lode')
+    message.reply_text('110 e lode')
 
 def trentaelodemax(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice 30 e lode, Max bocciato')
+    message.reply_text('Apice 110 e lode, Max bocciato')
 
 def stocazzo(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Sto cazzo!')
+
+def lotito(bot, update):
+    message = update.message or update.edited_message
+    message.reply_text('È stato Lotito!')
 
 # def delete_message(bot, update):
 #     message = update.message or update.edited_message
@@ -79,6 +83,8 @@ def main():
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), trentaelode, edited_updates=True))
+
+    dp.add_handler(MessageHandler(Filters.user(user_id=APICE_ID), lotito, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
