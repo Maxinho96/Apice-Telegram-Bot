@@ -18,7 +18,7 @@ def stocazzo(bot, update):
 
 def lotito(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('È stato Lotito!')
+    message.reply_text('Lotito!')
 
 # def delete_message(bot, update):
 #     message = update.message or update.edited_message
@@ -41,6 +41,7 @@ def letter_to_chars(letter):
            "c": "c",
            "d": "d",
            "e": "e3",
+           "h": "h",
            "i": "i1",
            "l": "l",
            "m": "m",
@@ -69,6 +70,7 @@ def main():
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
+    regex_lotito = word_to_regex("chi")
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), trentaelodemax, edited_updates=True))
@@ -84,7 +86,8 @@ def main():
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), trentaelode, edited_updates=True))
 
-    dp.add_handler(MessageHandler(Filters.user(user_id=APICE_ID), lotito, edited_updates=True))
+    pattern_lotito = re.compile(regex_lotito, re.IGNORECASE | re.DOTALL)
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_lotito), lotito, edited_updates=True))
 
     PORT = int(os.environ.get("PORT", "8443"))
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
