@@ -54,7 +54,8 @@ def letter_to_chars(letter):
            "u": "u",
            "x": "x",
            "z": "z2",
-           " ": " "}
+           " ": " ",
+           "?": "?"}
     return dic[letter]
 
 
@@ -70,7 +71,7 @@ def main():
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
-    regex_lotito = word_to_regex("chi")
+    regex_lotito = "([^A-z]" + word_to_regex("chi") + "[^A-z])"
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), trentaelodemax, edited_updates=True))
