@@ -79,7 +79,7 @@ def main():
     dp = updater.dispatcher
 
     # pattern_apice_max = re.compile('(?=.*[a4]+[\W_]*p+[\W_]*[i1]+[\W_]*c+[\W_]*[e3]+)(?=.*((m|/\\\\/\\\\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+)).*', re.IGNORECASE | re.DOTALL)
-    regex_apice = "(" + word_to_regex("apice") + "|" + word_to_regex("アチェ") + ")"
+    regex_apice = "(" + word_to_regex("apice") + "|" + word_to_regex("チェ") + ")"
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_30L = "(" + word_to_regex("trenta") + "|" + word_to_regex("lode") + "|" + "(?=.*3[\W_]*[0-9o]+)" + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
