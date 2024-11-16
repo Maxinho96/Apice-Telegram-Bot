@@ -20,17 +20,17 @@ def lotito(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Lotito!')
 
-def prima(bot, update):
+def roma_vince(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice entra in Prima SICURO!')
+    message.reply_text('Apice vedrà la Roma vincere la prossima partita SICURO!')
 
 def maxfigli(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Max avrà figli SICURO!')
 
-def primamaxfigli(bot, update):
+def roma_vince_maxfigli(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice entra in Prima SICURO, Max avrà figli SICURO!')
+    message.reply_text('Apice vedrà la Roma vincere la prossima partita SICURO, Max avrà figli SICURO!')
 
 # def delete_message(bot, update):
 #     message = update.message or update.edited_message
@@ -87,21 +87,21 @@ def main():
     regex_prima = word_to_regex("prima")
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), primamaxfigli, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), roma_vince_maxfigli, edited_updates=True))
 
     # pattern_apice = re.compile('(?=.*[a4]+[\W_]*p+[\W_]*[i1]+[\W_]*c+[\W_]*[e3]+)', re.IGNORECASE | re.DOTALL)
     pattern_apice = re.compile(regex_apice, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice), prima, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice), roma_vince, edited_updates=True))
     
     pattern_prima = re.compile(regex_prima, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_prima), prima, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_prima), roma_vince, edited_updates=True))
 
     # pattern_max = re.compile('(?=.*((m|/\\\\/\\\\)+[\W_]*[a4]+[\W_]*(x+|s+[\W_]*[i1]+)|b+[\W_]*r+[\W_]*u+[\W_]*n+[\W_]*[i1]+))(?=.*([0-9]+[\W_]*[0-9o]+|t+[\W_]*r+[\W_]*[e3]+[\W_]*n+[\W_]*t+[\W_]*[a4]+|l+[\W_]*(o|0)+[\W_]*d+[\W_]*[e3]+)).*', re.IGNORECASE | re.DOTALL)
     pattern_max = re.compile(regex_max, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_max), maxfigli, edited_updates=True))
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), prima, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), roma_vince, edited_updates=True))
 
     pattern_lotito = re.compile(regex_lotito, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_lotito), lotito, edited_updates=True))
