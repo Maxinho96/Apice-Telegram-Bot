@@ -24,15 +24,15 @@ def lotito(bot, update):
 
 def apice_roma_vince(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice vedrà la roma andare in Champions SICURO!')
+    message.reply_text('Apice vedrà la roma vincere l\'Europa League SICURO!')
 
 def max_roma_vince(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Max vedrà la roma andare in Champions SICURO!')
+    message.reply_text('Max vedrà la roma vincere l\'Europa League SICURO!')
 
 def apice_max_roma_vince(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice vedrà la roma andare in Champions SICURO, Max vedrà la roma andare in Champions SICURO!')
+    message.reply_text('Apice vedrà la roma vincere l\'Europa League SICURO, Max vedrà la roma vincere l\'Europa League SICURO!')
 
 # def delete_message(bot, update):
 #     message = update.message or update.edited_message
