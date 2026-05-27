@@ -6,37 +6,29 @@ from telegram.ext import Filters, MessageHandler, Updater
 from custom_filters import RegexPreprocessingFilter
 
 
-def trentaelode(bot, update):
-    message = update.message or update.edited_message
-    message.reply_text('110 e lode')
-
-def trentaelodemax(bot, update):
-    message = update.message or update.edited_message
-    message.reply_text('Apice 110 e lode, Max bocciato')
-
-def stocazzo(bot, update):
-    message = update.message or update.edited_message
-    message.reply_text('Sto cazzo!')
-
 def lotito(bot, update):
     message = update.message or update.edited_message
     message.reply_text('Lotito!')
 
-def apice_roma_vince(bot, update):
+def apice(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice vedrà la roma vincere l\'Europa League SICURO!')
+    message.reply_text('Apice entrerà in Banca d\'Italia SICURO!')
 
-def max_roma_vince(bot, update):
+def max(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Max vedrà la roma vincere l\'Europa League SICURO!')
+    message.reply_text('Max farà entrare Apice in Prima SICURO!')
 
-def apice_max_roma_vince(bot, update):
+def apice_max(bot, update):
     message = update.message or update.edited_message
-    message.reply_text('Apice vedrà la roma vincere l\'Europa League SICURO, Max vedrà la roma vincere l\'Europa League SICURO!')
+    message.reply_text('Apice entrerà in Banca d\'Italia, altrimenti Max farà entrare Apice in Prima SICURO!')
 
-# def delete_message(bot, update):
-#     message = update.message or update.edited_message
-#     bot.deleteMessage(chat_id=message.chat.id, message_id=message.message_id)
+def roma(bot, update):
+    message = update.message or update.edited_message
+    message.reply_text('as roma MERDA! 💩')
+
+def lazio(bot, update):
+    message = update.message or update.edited_message
+    message.reply_text('Avanti Lazio! 🦅')
 
 # Given a word, returns a regex which is robust to spaces, dots and repetitions to find that word in the sentence
 def word_to_regex(word):
@@ -84,21 +76,29 @@ def main():
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
     regex_stocazzo = word_to_regex("sto cazzo")
     regex_lotito = "[^A-z]chi[^A-z]|^chi[^A-z]|[^A-z]chi$|^chi$$"
+    regex_roma = word_to_regex("roma")
+    regex_lazio = word_to_regex("lazio")
 
     pattern_apice_max = re.compile(regex_apice + regex_max, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), apice_max_roma_vince, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice_max), apice_max, edited_updates=True))
 
     pattern_apice = re.compile(regex_apice, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice), apice_roma_vince, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_apice), apice, edited_updates=True))
     
     pattern_max = re.compile(regex_max, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_max), max_roma_vince, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_max), max, edited_updates=True))
 
     pattern_stocazzo = re.compile(regex_stocazzo, re.IGNORECASE | re.DOTALL)
-    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), apice_roma_vince, edited_updates=True))
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_stocazzo) & Filters.user(user_id=APICE_ID), apice, edited_updates=True))
 
     pattern_lotito = re.compile(regex_lotito, re.IGNORECASE | re.DOTALL)
     dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_lotito), lotito, edited_updates=True))
+
+    pattern_roma = re.compile(regex_roma, re.IGNORECASE | re.DOTALL)
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_roma), roma, edited_updates=True))
+
+    pattern_lazio = re.compile(regex_lazio, re.IGNORECASE | re.DOTALL)
+    dp.add_handler(MessageHandler(RegexPreprocessingFilter(pattern_lazio), lazio, edited_updates=True))
 
     # PORT = int(os.environ.get("PORT", "8443"))
     # HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
