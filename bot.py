@@ -79,7 +79,20 @@ def check_lockers_state(bot, job):
         used_lockers = [num for num, is_available in current_lockers_state.items() if not is_available]
         unused_lockers = [num for num, is_available in current_lockers_state.items() if is_available]
 
-        message = f"Locker usati ({len(used_lockers)}): {used_lockers}\nLocker liberi ({len(unused_lockers)}): {unused_lockers}"
+        locker_rows = sorted(
+            current_lockers_state.items(),
+            key=lambda item: (str(item[0]).isdigit(), str(item[0]))
+        )
+        locker_list = "\n".join(
+            f"{locker_num} {'🟢' if is_available else '🔴'}"
+            for locker_num, is_available in locker_rows
+        )
+
+        message = (
+            "Stato locker aggiornato\n"
+            f"🔴 Usati: {len(used_lockers)} | 🟢 Liberi: {len(unused_lockers)}\n"
+            f"{locker_list}"
+        )
         bot.send_message(
             chat_id=ANNA_ID, 
             text=message
@@ -95,7 +108,17 @@ def check_lockers_amount(bot, job):
     global last_lockers_amount
     current_lockers_amount = get_lockers_amount()
     if current_lockers_amount and current_lockers_amount != last_lockers_amount:
-        message = f"Incassi: {current_lockers_amount}"
+        amount_line = f"💰 Totale incassi: {current_lockers_amount:.2f} €"
+
+        if last_lockers_amount is not None:
+            delta = current_lockers_amount - last_lockers_amount
+            trend_emoji = "📈" if delta > 0 else "📉" if delta < 0 else "➖"
+            trend_line = f"\n{trend_emoji} Variazione: {delta:.2f} €"
+            amount_line += trend_line
+
+        message = (
+            f"Incassi aggiornati\n{amount_line}"
+        )
         bot.send_message(
             chat_id=ANNA_ID, 
             text=message
