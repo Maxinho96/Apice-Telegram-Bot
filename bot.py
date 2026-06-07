@@ -4,7 +4,7 @@ import re
 from telegram.ext import Filters, MessageHandler, Updater
 
 from custom_filters import RegexPreprocessingFilter
-
+from promotec import get_lockers_state
 
 def lotito(bot, update):
     message = update.message or update.edited_message
@@ -64,6 +64,28 @@ def letter_to_chars(letter):
            "?": "?"}
     return dic.get(letter, letter)
 
+last_lockers_state = {}
+
+def check_lockers_state(bot, job):
+    MAX_ID = os.getenv("MAX_ID")
+    ANNA_ID = os.getenv("ANNA_ID")
+    global last_lockers_state
+    current_lockers_state = get_lockers_state()
+    if True: #current_lockers_state != last_lockers_state:
+        used_lockers = [num for num, is_available in current_lockers_state.items() if not is_available]
+        unused_lockers = [num for num, is_available in current_lockers_state.items() if is_available]
+
+        message = f"Locker usati ({len(used_lockers)}): {used_lockers}\nLocker liberi ({len(unused_lockers)}): {unused_lockers}"
+        bot.send_message(
+            chat_id=ANNA_ID, 
+            text=message
+        )
+        bot.send_message(
+            chat_id=MAX_ID, 
+            text=message
+        )
+
+        last_lockers_state = current_lockers_state
 
 def main():
     TOKEN = os.getenv("TOKEN")
@@ -71,6 +93,9 @@ def main():
 
     updater = Updater(TOKEN)
     dp = updater.dispatcher
+
+    job_queue = updater.job_queue
+    job_queue.run_repeating(check_lockers_state, interval=60*5, first=0)
 
     regex_apice = "(" + word_to_regex("apice") + "|" + word_to_regex("チェ") + ")"
     regex_max = "(" + word_to_regex("max") + "|" + word_to_regex("massi") + "|" + word_to_regex("bruni") + ")"
