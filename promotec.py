@@ -7,23 +7,53 @@ from bs4 import BeautifulSoup
 
 URL = "https://client.somee.com/"
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
-VIEWSTATE_GENERATOR = "CA0B0334"
 
+
+def authenticate(session: requests.Session):
+    response = session.post(URL, timeout=10)
+
+    user_payload = get_tokens(response.text) | {
+        "txtUserName": os.getenv("USER"),
+        "btnSelecUser": "Select",
+    }
+    user_response = session.post(URL, data=user_payload, timeout=10)
+
+    password_payload = get_tokens(user_response.text) | {
+        "txtSysPsw": os.getenv("PASSWORD"),
+        "btnSelectSystem_2": "Roma Prati cloud",
+    }
+    password_response = session.post(URL, data=password_payload, timeout=10)
+
+    return get_tokens(password_response.text)
+
+def get_tokens(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    viewstate_element = soup.find("input", {"id": "__VIEWSTATE"})
+    viewstate_value = viewstate_element["value"] if viewstate_element else None
+
+    eventvalidation_element = soup.find("input", {"id": "__EVENTVALIDATION"})
+    eventvalidation_value = (
+        eventvalidation_element["value"] if eventvalidation_element else None
+    )
+
+    return {
+        "__VIEWSTATE": viewstate_value,
+        "__EVENTVALIDATION": eventvalidation_value,
+    }
 
 def get_lockers_state():
+    session = requests.Session()
+    tokens = authenticate(session)
     payload = {
         "__EVENTTARGET": "__Page",
         "__EVENTARGUMENT": "PBArg",
-        "__VIEWSTATE": os.getenv("VIEWSTATE_LOCKERS"),
-        "__VIEWSTATEGENERATOR": VIEWSTATE_GENERATOR,
-        "__EVENTVALIDATION": os.getenv("EVENTVALIDATION_LOCKERS"),
-    }
+    } | tokens
     headers = {
         "user-agent": USER_AGENT,
-        "Cookie": f"ASP.NET_SessionId={os.getenv('SESSIONID_LOCKERS')}; UserInfo=Name={os.getenv('USER')}",
     }
 
-    response = requests.request("POST", URL, headers=headers, data=payload, timeout=10)
+    response = session.post(URL, headers=headers, data=payload, timeout=10)
 
     html_content = response.text
 
@@ -46,19 +76,29 @@ def get_lockers_state():
 
 
 def get_lockers_amount():
+    session = requests.Session()
+    tokens = authenticate(session)
+
+    payload_counters = {
+        "BtnCounters": "Counters"
+    } | tokens
+    response_counters = session.post(URL, data=payload_counters, timeout=10)
+    tokens_counters = get_tokens(response_counters.text)
+
+    payload_incomming = {
+        "__EVENTTARGET": "__Page",
+        "__EVENTARGUMENT": "PBArg",
+        "TxtIncomming": "0",
+    } | tokens_counters
+    response_incomming = session.post(URL, data=payload_incomming, timeout=10)
+    tokens_incomming = get_tokens(response_incomming.text)
+
     payload = {
-        "__VIEWSTATE": os.getenv("VIEWSTATE_AMOUNT"),
-        "__VIEWSTATEGENERATOR": VIEWSTATE_GENERATOR,
-        "__EVENTVALIDATION": os.getenv("EVENTVALIDATION_AMOUNT"),
         "monthList": f"{datetime.now():%m/%Y}",
         "BtnGetCounterRecords": "Get Incoming",
-    }
-    headers = {
-        "user-agent": USER_AGENT,
-        "Cookie": f"ASP.NET_SessionId={os.getenv('SESSIONID_AMOUNT')}; UserInfo=Name={os.getenv('USER')}",
-    }
+    } | tokens_incomming
 
-    response = requests.request("POST", URL, headers=headers, data=payload, timeout=10)
+    response = session.post(URL, data=payload, timeout=10)
 
     html_content = response.text
 
