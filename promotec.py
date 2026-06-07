@@ -12,13 +12,15 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
 def authenticate(session: requests.Session):
     response = session.post(URL, timeout=10)
 
-    user_payload = get_tokens(response.text) | {
+    user_payload = {
+        **get_tokens(response.text),
         "txtUserName": os.getenv("USER"),
         "btnSelecUser": "Select",
     }
     user_response = session.post(URL, data=user_payload, timeout=10)
 
-    password_payload = get_tokens(user_response.text) | {
+    password_payload = {
+        **get_tokens(user_response.text),
         "txtSysPsw": os.getenv("PASSWORD"),
         "btnSelectSystem_2": "Roma Prati cloud",
     }
@@ -48,7 +50,8 @@ def get_lockers_state():
     payload = {
         "__EVENTTARGET": "__Page",
         "__EVENTARGUMENT": "PBArg",
-    } | tokens
+        **tokens
+    }
     headers = {
         "user-agent": USER_AGENT,
     }
@@ -80,8 +83,9 @@ def get_lockers_amount():
     tokens = authenticate(session)
 
     payload_counters = {
-        "BtnCounters": "Counters"
-    } | tokens
+        "BtnCounters": "Counters",
+        **tokens
+    }
     response_counters = session.post(URL, data=payload_counters, timeout=10)
     tokens_counters = get_tokens(response_counters.text)
 
@@ -89,14 +93,16 @@ def get_lockers_amount():
         "__EVENTTARGET": "__Page",
         "__EVENTARGUMENT": "PBArg",
         "TxtIncomming": "0",
-    } | tokens_counters
+        **tokens_counters
+    }
     response_incomming = session.post(URL, data=payload_incomming, timeout=10)
     tokens_incomming = get_tokens(response_incomming.text)
 
     payload = {
         "monthList": f"{datetime.now():%m/%Y}",
         "BtnGetCounterRecords": "Get Incoming",
-    } | tokens_incomming
+        **tokens_incomming
+    }
 
     response = session.post(URL, data=payload, timeout=10)
 
