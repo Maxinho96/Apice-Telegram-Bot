@@ -75,9 +75,9 @@ last_lockers_amount = None
 def check_lockers_state(bot, job):
     global last_lockers_state
     current_lockers_state = get_lockers_state()
-    if current_lockers_state and current_lockers_state != last_lockers_state:
-        used_lockers = [num for num, is_available in current_lockers_state.items() if not is_available]
-        unused_lockers = [num for num, is_available in current_lockers_state.items() if is_available]
+    if len(current_lockers_state) == 20 and current_lockers_state != last_lockers_state:
+        current_used_lockers = [num for num, is_available in current_lockers_state.items() if not is_available]
+        current_unused_lockers = [num for num, is_available in current_lockers_state.items() if is_available]
 
         locker_rows = sorted(
             current_lockers_state.items(),
@@ -88,9 +88,13 @@ def check_lockers_state(bot, job):
             for locker_num, is_available in locker_rows
         )
 
+        if last_lockers_state:
+            delta_lockers = sum(not v for v in current_lockers_state.values()) - sum(not v for v in last_lockers_state.values())
+            locker_list += f"\nVariazione: {'📈' if delta_lockers > 0 else '📉' if delta_lockers < 0 else '➖'} {delta_lockers:+d}"
+
         message = (
             "Stato locker aggiornato\n"
-            f"🔴 Usati: {len(used_lockers)} | 🟢 Liberi: {len(unused_lockers)}\n"
+            f"🔴 Usati: {len(current_used_lockers)} | 🟢 Liberi: {len(current_unused_lockers)}\n"
             f"{locker_list}"
         )
         bot.send_message(
