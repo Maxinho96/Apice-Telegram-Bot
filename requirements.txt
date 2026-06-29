@@ -2,5 +2,3 @@
 # $ conda create --name <env> --file <this file>
 
 python-telegram-bot==11.1.0
-beautifulsoup4==4.13.3
-requests==2.32.4
